@@ -48,8 +48,7 @@ while true
       next
     end
     d = delayed[t.name]
-    next if (t.time.nil? == false && d[:time] - t.time < 1.hour) &&
-            (t.description.nil? == false && d[:description] == t.description)
+    next if t.description.nil? == false && d[:description] == t.description
     t.time = d[:time]
     t.description = d[:description]
     t.save!
