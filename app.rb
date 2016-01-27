@@ -12,7 +12,7 @@ ActiveRecord::Base.establish_connection(
 
 class Train < ActiveRecord::Base; end
 
-def notify_string(name:, time:, description:, url:)
+def notify_string(name:, time:, description:, url: nil)
 detail = url ? "\n<#{url}|Detail>" : ""
 <<EOS
 遅延情報 : #{name}
@@ -40,19 +40,21 @@ while true
     next unless t.watching
     unless delayed[t.name]
       if t.time != nil
-        n = notify_string(name: t.name, time: Time.now, description: "復旧しました！")
-        notify(n)
+        if t.time - d[:time] < 1.hour
+          notify(notify_string(name: t.name, time: Time.now, description: "復旧しました！"))
+        end
         t.time = nil
         t.save!
       end
       next
     end
     d = delayed[t.name]
-    next if t.description.nil? == false && d[:description] == t.description
+    if t.description.nil? == false && d[:description] == t.description
+      notify(notify_string(d))
+    end
     t.time = d[:time]
     t.description = d[:description]
     t.save!
-    notify(notify_string(d))
   end
   sleep 5.minutes
 end
