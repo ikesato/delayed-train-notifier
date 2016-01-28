@@ -13,8 +13,11 @@ class CreateTables < ActiveRecord::Migration
     reversible do |dir|
       dir.up do
         Train.create!(name: "京浜東北根岸線", watching: 1)
-        Train.create!(name: "都営三田線", watching: 1)
+        Train.create!(name: "都営浅草線", watching: 1)
         Train.create!(name: "山手線", watching: 1)
+        Train.create!(name: "都営三田線", watching: 1)
+        Train.create!(name: "東急大井町線", watching: 1)
+        Train.create!(name: "東急田園都市線", watching: 1)
       end
     end
   end
