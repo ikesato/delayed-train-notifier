@@ -40,7 +40,7 @@ while true
     next unless t.watching
     unless delayed[t.name]
       if t.time != nil
-        if t.time - d[:time] < 1.hour
+        if Time.now - t.time < 1.hour
           notify(notify_string(name: t.name, time: Time.now, description: "復旧しました！"))
         end
         t.time = nil
@@ -49,9 +49,7 @@ while true
       next
     end
     d = delayed[t.name]
-    if t.description.nil? == false && d[:description] == t.description
-      notify(notify_string(d))
-    end
+    notify(notify_string(d)) if t.description != d[:description]
     t.time = d[:time]
     t.description = d[:description]
     t.save!
